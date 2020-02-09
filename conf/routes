@@ -1,7 +1,55 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
-# https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
+POST    /api/users/signup                      controllers.AuthenticationController.signUp
+POST    /api/users/signin                      controllers.AuthenticationController.signIn
+POST    /api/users/signout                     controllers.AuthenticationController.signOut
+##PUT     /api/users/:id
+##DELETE  /api/users/:id
+GET     /api/users/:id                         controllers.UsersController.userDetailInfo(id: java.util.UUID)
+##GET     /api/users/ramdon/:id
 
-# An example controller showing a sample home page
-GET   /posts                           controllers.PostsController.get()
+GET       /api/timelines            controllers.PostsController.getTimelines
+GET       /api/threads              controllers.PostsController.getThreads
+GET       /api/users/:id/timelines  controllers.PostsController.getUserTimelines(id: java.util.UUID)
+GET       /api/users/:id/threads    controllers.PostsController.getUserThreads(id: java.util.UUID)
+GET       /api/posts/:id            controllers.PostsController.getDetailResult(id: Int)
+POST      /api/posts                controllers.PostsController.add
+PUT       /api/posts/:id            controllers.PostsController.update(id: Int)
+DELETE    /api/posts/:id            controllers.PostsController.delete(id: Int)
+
+GET     /api/users/:id/followings   controllers.RelationshipsController.followings(id: java.util.UUID)
+GET     /api/users/:id/followers    conotrllers.RelationshipsController.follwers(id: java.util.UUID.1)
+POST    /api/users/:id/following
+DELETE  /api/users/:id/following
+
+##GET     /api/posts/:id/likes
+##POST    /api/posts/:id/like
+##DELETE  /api/posts/:id/likes
+
+##GET     /api/posts/:id/comment/:id/likes
+##POST    /api/posts/:id/comment/:id/like
+##DELETE  /api/posts/:id/comment/:id
+
+GET     /api/posts/:id/likes  controllers.LikesController.getPostLikesCount(id: Int)
+POST    /api/posts/:id/likes  controllers.LikesController.createPostLike(id: Int)
+DELETE  /api/posts/:id/likes  controllers.LikesController.deletePostLike(id: Int)
+
+GET     /api/comment/:id/likes  controllers.LikesController.getCommentLikesCount(id: Int)
+POST    /api/comment/:id/likes  controllers.LikesController.createCommentLike(id: Int)
+DELETE  /api/comment/:id/likes  controllers.LikesController.deleteCommentLike(id: Int)
+
+GET     /api/posts/:post_id/comments     controllers.CommentsController.getComments(post_id: Int)
+POST    /api/posts/comment               controllers.CommentsController.commentCreate
+PUT     /api/posts/:comment_id           controllers.CommentsController.commentUpdate(comment_id: Int)
+DELETE  /api/posts/:comment_id           controllers.CommentsController.commentDelete(comment_id: Int)
+
+##GET     /api/posts/:post_id/comment/:comment_id/comments
+##POST    /api/posts/:post_id/comment/:comment_id/comment
+##PUT     /api/posts/:post_id/comment/:comment_id/comment/:comment_id
+##DELETE  /api/posts/:post_id/comment/:comment_id/comment/:comment_id
+
+##GET     /api/users/:id/schedules
+##POST    /api/schedules
+##PUT     /api/schedule/:id
+##DELETE  /api/schedule/:id

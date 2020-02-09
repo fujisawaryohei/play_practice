@@ -1,46 +1,35 @@
-package models
+package models.domain
 
-import java.time.OffsetDateTime
+import java.util.UUID
+import java.time.Instant
 import play.api.libs.json.Json
 import play.api.libs.json.JsValue
 import play.api.libs.json.Writes
 
-case class Post(id: String,
-                user_id: String,
-                text: String,
-                comment_count: Int)
-                // posted_at: OffsetDateTime)
+case class Post(
+    id: Option[Int],
+    userID: UUID,
+    title: String,
+    content: String,
+    filename: String,
+    postType: String,
+    createdAt: Instant)
 
 object Post {
-  implicit val writes :Writes[Post] =
-    new Writes[Post] {
-      def writes(post: Post) =
-        Json.obj(
-          "id"-> post.id,
-          "user_id"-> post.user_id,
-          "text"-> post.text,
-          "comment_count"-> post.comment_count
-          // "posted_at"-> post.posted_at
-        )
-    }
+  val tupled = (apply _).tupled
+
+  implicit val writes: Writes[Post] = Json.writes[Post]
+
+  def fromForm(
+      userID: UUID,
+      params: (String, String, String),
+      postType: String): Post =
+    apply(None, userID, params._1, params._2, params._3, postType, Instant.now)
 }
 
-case class Meta(status: Int, errorMessage: Option[String] = None)
+sealed class PostType(val typeName: String)
 
-object Meta {
-  implicit val writes :Writes[Meta] =
-    new Writes[Meta] {
-      def writes(meta: Meta) =
-        Json.obj("status"-> meta.status, "errorMessage"-> meta.errorMessage)
-    }
-}
-
-case class Response(meta: Meta,data: Option[JsValue] = None)
-
-object Response {
-  implicit val writes :Writes[Response] =
-    new Writes[Response] {
-      def writes(response: Response) =
-        Json.obj("meta"-> response.meta, "data"-> response.data)
-    }
+object PostType {
+  case object Thread extends PostType("THREAD")
+  case object Timeline extends PostType("TIMELINE")
 }
